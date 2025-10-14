@@ -1,0 +1,283 @@
+import React from "react";
+import { useParams } from "react-router-dom";
+import RoadmapDSA from "./roadmaps/RoadmapDSA";
+import RoadmapOS from "./roadmaps/RoadmapOS";
+import RoadmapCN from "./roadmaps/RoadmapCN";
+import RoadmapCOA from "./roadmaps/RoadmapCOA";
+import RoadmapDBMS from "./roadmaps/RoadmapDBMS";
+import "./CourseRoadmap.css";
+
+/**
+ * @feature Multi-subject Course Roadmaps + Game Integration
+ * Dynamic roadmap loader based on URL param or prop
+ * Each subject has its own roadmap: DSA, OS, CN, COA, DBMS, OOPs, AI, Cyber, Cloud
+ * Maintains DSA mini-games and adds new subject-specific games
+ */
+
+const defaultLevels = [
+  { id: 1, title: "Foundations", focus: "Big-O, Complexity", status: "completed" },
+  { id: 2, title: "Arrays", focus: "Two Pointers, Sliding Window", status: "completed" },
+  { id: 3, title: "Strings", focus: "Pattern Matching", status: "completed" },
+  { id: 4, title: "Recursion", focus: "Backtracking", status: "completed" },
+  { id: 5, title: "Linked Lists", focus: "Fast & Slow Pointers", status: "active" },
+  { id: 6, title: "Stacks & Queues", focus: "Monotonic Structures", status: "locked" },
+  { id: 7, title: "Trees", focus: "DFS, BFS", status: "locked" },
+  { id: 8, title: "Binary Search Trees", focus: "Traversals", status: "locked" },
+  { id: 9, title: "Heaps", focus: "Priority Queues", status: "locked" },
+  { id: 10, title: "Graphs", focus: "Traversal, Shortest Path", status: "locked" },
+  { id: 11, title: "Dynamic Programming I", focus: "Memoization", status: "locked" },
+  { id: 12, title: "Dynamic Programming II", focus: "Tabulation", status: "locked" },
+  { id: 13, title: "Greedy", focus: "Exchange Arguments", status: "locked" },
+  { id: 14, title: "Divide & Conquer", focus: "Master Theorem", status: "locked" },
+  { id: 15, title: "Bit Manipulation", focus: "Trick Patterns", status: "locked" },
+  { id: 16, title: "Advanced Graphs", focus: "Union-Find, MST", status: "locked" },
+  { id: 17, title: "Tries", focus: "String Search", status: "locked" },
+  { id: 18, title: "Segment Trees", focus: "Range Queries", status: "locked" },
+  { id: 19, title: "Practice Arena", focus: "Timed Quests", status: "locked" },
+  { id: 20, title: "Capstone Raid", focus: "Systems Challenge", status: "locked" }
+];
+
+const basePositions = [
+  { x: 50, y: 95 },
+  { x: 35, y: 90 },
+  { x: 65, y: 85 },
+  { x: 30, y: 79 },
+  { x: 70, y: 73 },
+  { x: 25, y: 67 },
+  { x: 75, y: 61 },
+  { x: 30, y: 55 },
+  { x: 70, y: 49 },
+  { x: 35, y: 43 },
+  { x: 65, y: 37 },
+  { x: 30, y: 31 },
+  { x: 70, y: 25 },
+  { x: 35, y: 19 },
+  { x: 65, y: 13 },
+  { x: 30, y: 7 },
+  { x: 70, y: 1 },
+  { x: 35, y: -5 },
+  { x: 65, y: -11 },
+  { x: 50, y: -17 }
+];
+
+const statusLabel = {
+  completed: "Completed",
+  active: "In Progress",
+  locked: "Locked"
+};
+
+const statusEmoji = {
+  completed: "✅",
+  active: "🚀",
+  locked: "🔒"
+};
+
+/**
+ * Dynamic Roadmap Loader
+ * Loads subject-specific roadmap based on URL param (/courses/:subject) or prop (subject="os")
+ * Supports: dsa, os, cn, coa, dbms, oops, ai, cyber, cloud
+ */
+const CourseRoadmap = ({ subject: propSubject, courseTitle = "Data Structures & Algorithms", levels = defaultLevels, mentorName = "Tuto" }) => {
+  const { subject: paramSubject } = useParams();
+  const subject = propSubject || paramSubject || "dsa";
+
+  // If a specific subject roadmap is requested, render it
+  switch (subject.toLowerCase()) {
+    case "dsa":
+      return <RoadmapDSA />;
+    case "os":
+      return <RoadmapOS />;
+    case "cn":
+      return <RoadmapCN />;
+    case "coa":
+      return <RoadmapCOA />;
+    case "dbms":
+      return <RoadmapDBMS />;
+    case "oops":
+      return <div className="roadmap-shell"><h1>OOPs Roadmap Coming Soon...</h1></div>;
+    case "ai":
+    case "ai_ml":
+      return <div className="roadmap-shell"><h1>AI/ML Roadmap Coming Soon...</h1></div>;
+    case "cyber":
+      return <div className="roadmap-shell"><h1>Cybersecurity Roadmap Coming Soon...</h1></div>;
+    case "cloud":
+      return <div className="roadmap-shell"><h1>Cloud Computing Roadmap Coming Soon...</h1></div>;
+    default:
+      // Fallback to legacy inline rendering if needed
+      break;
+  }
+
+  // Legacy rendering for backwards compatibility (if called without subject param)
+  const CourseRoadmap = ({
+  courseTitle = "Data Structures & Algorithms",
+  levels = defaultLevels,
+  mentorName = "Tuto"
+}) => {
+  const nodes = levels.map((level, index) => ({
+    ...level,
+    position: basePositions[index] || { x: 10 + index * 4, y: 10 + ((index % 2) * 10) }
+  }));
+
+  const activeIndex = nodes.findIndex((node) => node.status === "active");
+  const completedCount = nodes.filter((node) => node.status === "completed").length;
+  const progressPercent = Math.round((completedCount / nodes.length) * 100);
+  const iconPool = ["⭐", "🎧", "📘", "🧠", "🛠️", "🧩"];
+
+  const buildPath = () => {
+    if (!nodes.length) return "";
+    return nodes.reduce((path, node, index) => {
+      const { x, y } = node.position;
+      if (index === 0) {
+        return `M ${x} ${y}`;
+      }
+      const prev = nodes[index - 1].position;
+      const controlX = (prev.x + x) / 2 + (index % 2 === 0 ? 6 : -6);
+      const controlY = prev.y - Math.abs(prev.y - y) * 0.55;
+      return `${path} Q ${controlX} ${controlY} ${x} ${y}`;
+    }, "");
+  };
+
+  const pathD = buildPath();
+
+  return (
+    <div className="roadmap-shell">
+      <section className="roadmap-hero">
+        <div className="roadmap-hero__info">
+          <div>
+            <p className="roadmap-pill">Adventure Track</p>
+            <h1 className="roadmap-title">{courseTitle} Questline</h1>
+            <p className="roadmap-subtitle">
+              Chart your progress through curated boss fights, cinematic explainers, and hands-on code raids.
+            </p>
+          </div>
+          <div className="roadmap-hero__stats">
+            <div className="hero-stat">
+              <span>Completed</span>
+              <strong>{completedCount}/20</strong>
+            </div>
+            <div className="hero-stat">
+              <span>Progress</span>
+              <strong>{progressPercent}%</strong>
+            </div>
+            <div className="hero-stat">
+              <span>Current Gate</span>
+              <strong>#{activeIndex + 1}</strong>
+            </div>
+          </div>
+        </div>
+        <div className="roadmap-mentor">
+          <div className="mentor-avatar" aria-hidden="true">
+            <span role="img" aria-label="mentor">🤖</span>
+          </div>
+          <div>
+            <p className="mentor-name">{mentorName}</p>
+            <p className="mentor-tagline">"Stay focused, cadet. The next gate unlocks after today's quest!"</p>
+            <div className="mentor-hint">
+              <span>Next Mission:</span>
+              <strong>{nodes[activeIndex]?.title || "Unlocked soon"}</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside className="roadmap-legend">
+        <div className="legend-item">
+          <span className="legend-icon legend-icon--completed" />
+          Completed
+        </div>
+        <div className="legend-item">
+          <span className="legend-icon legend-icon--active" />
+          In Progress
+        </div>
+        <div className="legend-item">
+          <span className="legend-icon legend-icon--locked" />
+          Locked
+        </div>
+        <div className="legend-item legend-item--mini">
+          <span className="legend-marker">🧑‍🚀</span>
+          Your avatar
+        </div>
+      </aside>
+
+      <div className="roadmap-board">
+        <div className="roadmap-environment" aria-hidden="true" />
+        <svg className="roadmap-path" viewBox="0 0 100 140" preserveAspectRatio="xMidYMin meet">
+          <defs>
+            <linearGradient id="pathGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#7b5cff" />
+              <stop offset="100%" stopColor="#2dd4bf" />
+            </linearGradient>
+            <filter id="glow" x="-5" y="-5" width="110" height="110">
+              <feGaussianBlur stdDeviation="1.2" result="coloredBlur" />
+              <feMerge>
+                <feMergeNode in="coloredBlur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+          <path
+            d={pathD}
+            stroke="url(#pathGradient)"
+            strokeWidth="3"
+            fill="none"
+            strokeLinecap="round"
+            filter="url(#glow)"
+          />
+        </svg>
+
+        {nodes.map((node, index) => (
+          <div
+            key={node.id}
+            className={`roadmap-node roadmap-node--${node.status} ${index % 2 ? "roadmap-node--right" : "roadmap-node--left"}`}
+            style={{ left: `${node.position.x}%`, top: `${node.position.y}%` }}
+          >
+            <div className={`node-coin node-coin--${node.status}`}>
+              <span className="node-rank">{index + 1}</span>
+              <span className="node-icon">{iconPool[index % iconPool.length]}</span>
+            </div>
+            <div className="node-label">
+              <p>{node.title}</p>
+              <span>{node.focus}</span>
+            </div>
+          </div>
+        ))}
+
+        {activeIndex >= 0 && (
+          <div
+            className="roadmap-character"
+            style={{ left: `${nodes[activeIndex].position.x}%`, top: `${nodes[activeIndex].position.y}%` }}
+          >
+            <div className="character-emblem">🧑‍💻</div>
+            <div className="character-shadow" />
+          </div>
+        )}
+      </div>
+
+      <section className="roadmap-footer">
+        <article className="roadmap-card">
+          <h2>Level Intel</h2>
+          <ul>
+            {nodes.slice(0, 5).map((node) => (
+              <li key={node.id}>
+                <span>{node.title}</span>
+                <span className={`status status--${node.status}`}>{statusLabel[node.status]}</span>
+              </li>
+            ))}
+          </ul>
+        </article>
+        <article className="roadmap-card">
+          <h2>Upcoming Unlocks</h2>
+          <p>
+            Clear the active gate to receive motion-based deep dives, sandbox puzzles, and an outfit drop for your
+            character. Level 10 unlocks multiplayer raids; Level 20 opens the External Learning Portal.
+          </p>
+          <button className="roadmap-cta" type="button">
+            Launch Next Mission
+          </button>
+        </article>
+      </section>
+    </div>
+  );
+};
+
+export default CourseRoadmap;

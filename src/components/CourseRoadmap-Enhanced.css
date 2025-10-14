@@ -1,0 +1,415 @@
+/* Enhanced Tech-Oriented Roadmap Styles */
+
+.roadmap-shell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2.75rem;
+  padding: 4rem clamp(1.75rem, 4vw, 5rem) 5rem;
+  color: #f8fafc;
+  min-height: 100vh;
+  background: 
+    radial-gradient(circle at 10% 20%, rgba(75, 0, 130, 0.15), transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(0, 150, 255, 0.12), transparent 40%),
+    linear-gradient(180deg, #0a0e27 0%, #151a35 50%, #0d1428 100%);
+  font-family: "Inter", "Segoe UI", sans-serif;
+  overflow-x: hidden;
+}
+
+/* Animated Grid Background */
+.roadmap-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 0),
+    linear-gradient(180deg, rgba(56, 189, 248, 0.03) 1px, transparent 0);
+  background-size: 50px 50px;
+  animation: gridScroll 20s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes gridScroll {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(50px);
+  }
+}
+
+/* Floating Particles */
+.roadmap-shell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(2px 2px at 20% 30%, rgba(255, 255, 255, 0.15), transparent),
+                    radial-gradient(2px 2px at 60% 70%, rgba(139, 92, 246, 0.2), transparent),
+                    radial-gradient(1px 1px at 50% 50%, rgba(59, 130, 246, 0.2), transparent);
+  background-size: 200px 200px, 300px 300px, 250px 250px;
+  animation: particleFloat 30s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes particleFloat {
+  0%, 100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translateY(-20px);
+  }
+}
+
+/* Roadmap Board - Zigzag Layout */
+.roadmap-board {
+  position: relative;
+  width: 100%;
+  min-height: 1200px;
+  border-radius: 2rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: 
+    radial-gradient(circle at 30% 20%, rgba(139, 92, 246, 0.08), transparent 50%),
+    radial-gradient(circle at 70% 80%, rgba(59, 130, 246, 0.08), transparent 50%),
+    linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  box-shadow: 
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 45px 80px rgba(8, 11, 24, 0.7),
+    0 0 100px rgba(139, 92, 246, 0.15);
+  padding: 3rem 1rem;
+}
+
+/* Tech Circuit Background */
+.roadmap-environment {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><path d="M10,10 L30,10 L30,30 L50,30 L50,50 L70,50 L70,70 L90,70" stroke="rgba(139,92,246,0.1)" stroke-width="2" fill="none"/><circle cx="30" cy="30" r="3" fill="rgba(59,130,246,0.3)"/><circle cx="50" cy="50" r="3" fill="rgba(59,130,246,0.3)"/><circle cx="70" cy="70" r="3" fill="rgba(59,130,246,0.3)"/></svg>');
+  background-size: 200px 200px;
+  opacity: 0.4;
+  animation: circuitPulse 4s ease-in-out infinite;
+}
+
+@keyframes circuitPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.5; }
+}
+
+/* Zigzag Path Styling */
+.roadmap-path {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.4));
+}
+
+.roadmap-path path {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: pathDraw 3s ease-out forwards;
+}
+
+@keyframes pathDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Enhanced Node Styling */
+.roadmap-node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+  z-index: 10;
+}
+
+.roadmap-node:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+  z-index: 20;
+}
+
+/* Tech-Style Coin */
+.node-coin {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border: 4px solid;
+  box-shadow: 
+    0 10px 25px rgba(0, 0, 0, 0.5),
+    inset 0 -6px 12px rgba(0, 0, 0, 0.3),
+    0 0 0 2px rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+/* Hexagon Border Effect */
+.node-coin::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg 60deg,
+    rgba(139, 92, 246, 0.3) 60deg 120deg,
+    transparent 120deg 180deg,
+    rgba(59, 130, 246, 0.3) 180deg 240deg,
+    transparent 240deg 300deg,
+    rgba(139, 92, 246, 0.3) 300deg 360deg
+  );
+  border-radius: 50%;
+  animation: hexRotate 4s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.roadmap-node:hover .node-coin::before {
+  opacity: 1;
+}
+
+@keyframes hexRotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Circuit Lines on Hover */
+.node-coin::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px dashed rgba(139, 92, 246, 0.3);
+  border-radius: 50%;
+  animation: dashRotate 8s linear infinite;
+}
+
+@keyframes dashRotate {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+.node-coin:hover {
+  transform: translateY(-4px);
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.6),
+    inset 0 -6px 12px rgba(0, 0, 0, 0.3),
+    0 0 30px currentColor;
+}
+
+/* Status-based Colors with Tech Theme */
+.node-coin--completed {
+  background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
+  border-color: #10b981;
+  box-shadow: 
+    0 10px 25px rgba(16, 185, 129, 0.4),
+    inset 0 -6px 12px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(16, 185, 129, 0.5);
+}
+
+.node-coin--active {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
+  border-color: #f59e0b;
+  animation: activePulse 2s ease-in-out infinite;
+  box-shadow: 
+    0 10px 25px rgba(245, 158, 11, 0.5),
+    inset 0 -6px 12px rgba(0, 0, 0, 0.3),
+    0 0 30px rgba(245, 158, 11, 0.6);
+}
+
+@keyframes activePulse {
+  0%, 100% {
+    box-shadow: 
+      0 10px 25px rgba(245, 158, 11, 0.5),
+      inset 0 -6px 12px rgba(0, 0, 0, 0.3),
+      0 0 30px rgba(245, 158, 11, 0.6);
+  }
+  50% {
+    box-shadow: 
+      0 10px 25px rgba(245, 158, 11, 0.7),
+      inset 0 -6px 12px rgba(0, 0, 0, 0.3),
+      0 0 50px rgba(245, 158, 11, 0.9),
+      0 0 0 8px rgba(245, 158, 11, 0.2);
+  }
+}
+
+.node-coin--locked {
+  background: linear-gradient(135deg, #475569 0%, #334155 50%, #1e293b 100%);
+  border-color: #475569;
+  opacity: 0.6;
+  box-shadow: 
+    0 10px 25px rgba(0, 0, 0, 0.3),
+    inset 0 -6px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* Node Rank Badge */
+.node-rank {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border: 3px solid currentColor;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #fff;
+  z-index: 2;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Node Icon */
+.node-icon {
+  font-size: 2.2rem;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
+  animation: iconFloat 3s ease-in-out infinite;
+}
+
+@keyframes iconFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+/* Node Label with Tech Style */
+.node-label {
+  max-width: 160px;
+  font-size: 0.9rem;
+  line-height: 1.3;
+  color: #e2e8f0;
+  font-weight: 600;
+  text-align: center;
+  background: rgba(15, 23, 42, 0.9);
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.roadmap-node:hover .node-label {
+  border-color: rgba(139, 92, 246, 0.5);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4),
+              0 0 20px rgba(139, 92, 246, 0.2);
+}
+
+.node-label p {
+  margin: 0 0 0.25rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #fff;
+}
+
+.node-label span {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+/* Running Character Enhancement */
+.roadmap-character {
+  position: absolute;
+  transform: translate(-50%, -140%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  pointer-events: none;
+  z-index: 30;
+  animation: characterRun 1.5s ease-in-out infinite;
+}
+
+@keyframes characterRun {
+  0%, 100% {
+    transform: translate(-50%, -140%);
+  }
+  50% {
+    transform: translate(-50%, -150%);
+  }
+}
+
+.character-emblem {
+  width: 60px;
+  height: 60px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 2rem;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  border: 4px solid #fff;
+  box-shadow: 
+    0 8px 20px rgba(59, 130, 246, 0.6),
+    0 0 0 4px rgba(59, 130, 246, 0.3),
+    inset 0 -4px 8px rgba(0, 0, 0, 0.2);
+  animation: characterPulse 2s ease-in-out infinite;
+}
+
+@keyframes characterPulse {
+  0%, 100% {
+    box-shadow: 
+      0 8px 20px rgba(59, 130, 246, 0.6),
+      0 0 0 4px rgba(59, 130, 246, 0.3),
+      inset 0 -4px 8px rgba(0, 0, 0, 0.2);
+  }
+  50% {
+    box-shadow: 
+      0 10px 30px rgba(59, 130, 246, 0.8),
+      0 0 0 8px rgba(59, 130, 246, 0.4),
+      inset 0 -4px 8px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.character-shadow {
+  width: 50px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.5), transparent 70%);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .node-coin {
+    width: 75px;
+    height: 75px;
+  }
+
+  .node-icon {
+    font-size: 1.8rem;
+  }
+
+  .node-label {
+    max-width: 140px;
+    font-size: 0.85rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .character-emblem {
+    width: 50px;
+    height: 50px;
+    font-size: 1.6rem;
+  }
+}

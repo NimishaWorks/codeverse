@@ -1,0 +1,12 @@
+# Backend files
+node_modules/
+uploads/
+.env
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
