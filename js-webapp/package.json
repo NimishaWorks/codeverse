@@ -1,0 +1,43 @@
+{
+  "name": "codeverse-vanilla-js",
+  "version": "1.0.0",
+  "description": "CodeVerse - Multi-Subject Gamified Learning Platform (Vanilla JS Version)",
+  "type": "module",
+  "main": "js/app.js",
+  "scripts": {
+    "dev": "npx http-server . -p 3000 -c-1 --cors",
+    "start": "npx http-server . -p 8080 --cors",
+    "build": "npm run build:css && npm run build:js",
+    "build:css": "npx tailwindcss -i ./css/main.css -o ./dist/styles.css --minify",
+    "build:js": "node build.js",
+    "serve": "npx http-server dist -p 8080 --cors",
+    "lint": "npx eslint js/**/*.js",
+    "format": "npx prettier --write js/**/*.js css/**/*.css *.html",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "keywords": [
+    "education",
+    "learning",
+    "gamification",
+    "vanilla-js",
+    "computer-science",
+    "coding"
+  ],
+  "author": "CodeVerse Team",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "http-server": "^14.1.1",
+    "prettier": "^3.2.5",
+    "tailwindcss": "^3.4.1"
+  },
+  "dependencies": {},
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

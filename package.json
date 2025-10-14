@@ -16,9 +16,13 @@
     "@vitejs/plugin-react": "^5.0.4",
     "firebase": "^12.4.0",
     "framer-motion": "^12.23.24",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^3.0.3",
     "lucide-react": "^0.545.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-hot-toast": "^2.6.0",
+    "react-resizable-panels": "^3.0.6",
     "react-router-dom": "^7.9.4",
     "vite": "^7.1.9",
     "zustand": "^5.0.8"
