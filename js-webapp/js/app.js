@@ -35,17 +35,21 @@ class CodeVerseApp {
 
     async init() {
         try {
+            console.log('🚀 Starting CodeVerse initialization...');
+            
             // Show loading screen
             this.showLoadingScreen();
             
             // Initialize authentication state listener with error handling
             try {
+                console.log('📝 Initializing Firebase auth...');
                 this.initAuthStateListener();
                 
                 // Wait for auth state to load (with timeout)
                 await this.waitForAuthState();
+                console.log('✅ Firebase auth initialized');
             } catch (authError) {
-                console.warn('Firebase auth initialization failed, continuing in offline mode:', authError);
+                console.warn('⚠️ Firebase auth initialization failed, continuing in offline mode:', authError);
                 // Set a default user state for demo purposes
                 const { setUser } = useAuth();
                 setUser(null);
@@ -62,8 +66,14 @@ class CodeVerseApp {
             this.initGlobalListeners();
             
             // Navigate to initial route
-            const currentPath = window.location.pathname;
-            await router.navigate(currentPath || '/', false);
+            // For http-server, use hash or default to home
+            const currentPath = window.location.hash 
+                ? window.location.hash.substring(1) 
+                : (window.location.pathname === '/' || window.location.pathname === '/index.html') 
+                    ? '/' 
+                    : window.location.pathname;
+            
+            await router.navigate(currentPath, false);
             
             // Hide loading screen and show app
             this.hideLoadingScreen();
@@ -301,13 +311,20 @@ class CodeVerseApp {
             const loadingScreen = document.getElementById('loading-screen');
             const app = document.getElementById('app');
             
+            console.log('🎯 Hiding loading screen...');
+            console.log('Loading screen element:', loadingScreen);
+            console.log('App element:', app);
+            
             if (loadingScreen) {
                 loadingScreen.classList.add('hidden');
+                console.log('✅ Loading screen hidden');
             }
             if (app) {
                 app.classList.remove('hidden');
+                console.log('✅ App shown');
+                console.log('App innerHTML length:', app.innerHTML.length);
             }
-        }, 1000);
+        }, 500);
     }
 
     // Handle initialization error

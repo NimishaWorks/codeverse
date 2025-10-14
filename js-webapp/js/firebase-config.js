@@ -14,18 +14,33 @@ const firebaseConfig = {
   appId: "1:123456789:web:abcdef123456"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+let app, auth, db, storage, googleProvider;
 
-// Initialize Firebase services
-export const auth = getAuth(app);
-export const db = getFirestore(app);
-export const storage = getStorage(app);
+try {
+  console.log('🔥 Initializing Firebase...');
+  // Initialize Firebase
+  app = initializeApp(firebaseConfig);
 
-// Initialize Google Auth Provider
-export const googleProvider = new GoogleAuthProvider();
-googleProvider.setCustomParameters({
-  prompt: 'select_account'
-});
+  // Initialize Firebase services
+  auth = getAuth(app);
+  db = getFirestore(app);
+  storage = getStorage(app);
 
+  // Initialize Google Auth Provider
+  googleProvider = new GoogleAuthProvider();
+  googleProvider.setCustomParameters({
+    prompt: 'select_account'
+  });
+  
+  console.log('✅ Firebase initialized successfully');
+} catch (error) {
+  console.error('❌ Firebase initialization error:', error);
+  // Create mock objects to prevent crashes
+  auth = null;
+  db = null;
+  storage = null;
+  googleProvider = null;
+}
+
+export { auth, db, storage, googleProvider };
 export default app;

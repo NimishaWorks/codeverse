@@ -14,11 +14,12 @@ class Router {
     init() {
         // Listen for browser navigation
         window.addEventListener('popstate', (event) => {
-            this.navigate(window.location.pathname, false);
+            const path = window.location.pathname === '/index.html' ? '/' : window.location.pathname;
+            this.navigate(path, false);
         });
         
-        // Handle initial route
-        this.navigate(window.location.pathname, false);
+        // Handle initial route - don't navigate yet, let app.js handle it
+        // This prevents double navigation
         
         // Listen for state changes
         stateManager.subscribe('currentRoute', (route) => {
@@ -142,24 +143,33 @@ class Router {
     async renderComponent(route, path) {
         const mainContent = document.getElementById('main-content');
         
+        console.log('🎨 Rendering component for path:', path);
+        console.log('Main content element:', mainContent);
+        console.log('Route component:', route.component.name);
+        
         try {
             // Clear current content
             mainContent.innerHTML = '';
             
             // Create component instance
             const componentInstance = new route.component(route.params || {});
+            console.log('✅ Component instance created:', componentInstance);
             
             // Render component
             const element = await componentInstance.render();
+            console.log('✅ Component rendered, element:', element);
+            
             mainContent.appendChild(element);
+            console.log('✅ Element appended to main content');
             
             // Call component lifecycle methods
             if (componentInstance.onMount) {
                 componentInstance.onMount();
+                console.log('✅ onMount called');
             }
             
         } catch (error) {
-            console.error('Component render error:', error);
+            console.error('❌ Component render error:', error);
             mainContent.innerHTML = `
                 <div class="flex items-center justify-center min-h-screen">
                     <div class="text-center">
@@ -176,19 +186,11 @@ class Router {
 
     // Handle 404
     async handle404() {
-        const mainContent = document.getElementById('main-content');
-        mainContent.innerHTML = `
-            <div class="flex items-center justify-center min-h-screen">
-                <div class="text-center">
-                    <h1 class="text-6xl font-bold text-gray-400 mb-4">404</h1>
-                    <h2 class="text-2xl font-semibold text-gray-700 mb-4">Page Not Found</h2>
-                    <p class="text-gray-600 mb-8">The page you're looking for doesn't exist.</p>
-                    <a href="/" class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors">
-                        Go Home
-                    </a>
-                </div>
-            </div>
-        `;
+        console.log('⚠️ 404 - Page not found, redirecting to home...');
+        // Auto-redirect to home instead of showing 404
+        setTimeout(() => {
+            this.navigate('/', true);
+        }, 100);
     }
 
     // Show loading state

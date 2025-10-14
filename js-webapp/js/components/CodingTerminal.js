@@ -237,32 +237,34 @@ export class CodingTerminal {
     }
 
     initMonacoEditor() {
-        if (typeof monaco === 'undefined') {
-            console.error('Monaco Editor not loaded');
-            return;
-        }
-
         const container = document.getElementById('monacoEditor');
         if (!container) return;
 
-        require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs' }});
+        // Create a simple code editor using textarea
+        container.innerHTML = `
+            <textarea 
+                id="codeEditor" 
+                class="w-full h-full bg-[#1e1e1e] text-gray-100 p-4 font-mono text-sm resize-none focus:outline-none"
+                style="tab-size: 4; -moz-tab-size: 4;"
+                spellcheck="false"
+            >${this.code}</textarea>
+        `;
         
-        require(['vs/editor/editor.main'], () => {
-            this.editor = monaco.editor.create(container, {
-                value: this.code,
-                language: this.language,
-                theme: 'vs-dark',
-                minimap: { enabled: false },
-                fontSize: 14,
-                lineNumbers: 'on',
-                roundedSelection: false,
-                scrollBeyondLastLine: false,
-                automaticLayout: true
-            });
-
-            this.editor.onDidChangeModelContent(() => {
-                this.code = this.editor.getValue();
-            });
+        this.editor = document.getElementById('codeEditor');
+        
+        // Handle tab key for indentation
+        this.editor.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                const start = this.editor.selectionStart;
+                const end = this.editor.selectionEnd;
+                this.editor.value = this.editor.value.substring(0, start) + '    ' + this.editor.value.substring(end);
+                this.editor.selectionStart = this.editor.selectionEnd = start + 4;
+            }
+        });
+        
+        this.editor.addEventListener('input', () => {
+            this.code = this.editor.value;
         });
     }
 
@@ -304,8 +306,7 @@ export class CodingTerminal {
                 this.language = e.target.value;
                 this.code = this.getStarterCode(this.language);
                 if (this.editor) {
-                    monaco.editor.setModelLanguage(this.editor.getModel(), this.language);
-                    this.editor.setValue(this.code);
+                    this.editor.value = this.code;
                 }
             });
         }

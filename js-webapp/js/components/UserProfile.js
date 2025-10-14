@@ -1,5 +1,5 @@
 import { auth } from '../firebase-config.js';
-import { toastManager } from '../utils/toastManager.js';
+import { toastManager } from '../utils/toast-manager.js';
 
 export class UserProfile {
     constructor() {
@@ -273,5 +273,31 @@ export class UserProfile {
                 window.router?.navigate('/profile');
             }
         });
+    }
+    
+    loadProfile() {
+        try {
+            const saved = localStorage.getItem('userProfile');
+            if (saved) {
+                const data = JSON.parse(saved);
+                this.profile = { ...this.profile, ...data.profile };
+                this.stats = { ...this.stats, ...data.stats };
+            }
+        } catch (error) {
+            console.error('Error loading profile:', error);
+        }
+    }
+    
+    saveProfile() {
+        try {
+            localStorage.setItem('userProfile', JSON.stringify({
+                profile: this.profile,
+                stats: this.stats
+            }));
+            toastManager.success('Profile saved!');
+        } catch (error) {
+            console.error('Error saving profile:', error);
+            toastManager.error('Failed to save profile');
+        }
     }
 }

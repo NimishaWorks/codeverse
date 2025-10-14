@@ -1,4 +1,4 @@
-import { toastManager } from '../utils/toastManager.js';
+import { toastManager } from '../utils/toast-manager.js';
 
 export class GameHub {
     constructor() {

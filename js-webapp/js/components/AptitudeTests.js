@@ -665,7 +665,7 @@ export class AptitudeTests {
         }
     }
 
-    startTest(categoryId) {
+    async startTest(categoryId) {
         this.selectedCategory = categoryId;
         this.isTestActive = true;
         this.currentQuestionIndex = 0;
@@ -676,11 +676,28 @@ export class AptitudeTests {
         const category = this.categories.find(cat => cat.id === categoryId);
         this.timeLeft = category.duration * 60;
         
-        // Start timer
-        this.startTimer();
-        
-        // Re-render
+        // Re-render first to show the test interface
         this.rerender();
+        
+        // Start camera if enabled
+        if (this.settings.camera) {
+            try {
+                await this.camera.start();
+                toastManager.success('Camera enabled for proctoring');
+            } catch (error) {
+                console.error('Camera start error:', error);
+                toastManager.warning('Camera could not be started. Continuing without camera.');
+            }
+        }
+        
+        // Start timer if enabled
+        if (this.settings.timer) {
+            this.timer.start(category.duration * 60, () => {
+                // Time's up callback
+                toastManager.warning('Time is up!');
+                this.finishTest();
+            });
+        }
         
         toastManager.show(`Started ${category.name} test. Good luck!`, 'info');
     }
@@ -759,6 +776,14 @@ export class AptitudeTests {
 
     finishTest() {
         clearInterval(this.timerInterval);
+        
+        // Stop camera and timer
+        if (this.camera) {
+            this.camera.stop();
+        }
+        if (this.timer) {
+            this.timer.stop();
+        }
         
         const category = this.categories.find(cat => cat.id === this.selectedCategory);
         const answers = new Array(category.questions.length).fill(null);

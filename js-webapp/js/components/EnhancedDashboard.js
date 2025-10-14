@@ -1,5 +1,5 @@
-import { stateManager } from '../utils/stateManager.js';
-import { toastManager } from '../utils/toastManager.js';
+import { stateManager } from '../utils/state-manager.js';
+import { toastManager } from '../utils/toast-manager.js';
 
 export class EnhancedDashboard {
     constructor() {
