@@ -5,7 +5,6 @@ import CodingTerminal from './CodingTerminal';
 import AIInterviewer from './AIInterviewer';
 import AptitudeTests from './AptitudeTests';
 import TutorialModal from './TutorialModal';
-import ResumeBuilder from './ResumeBuilder';
 
 /**
  * Interview Hub with 6 tabs:
@@ -160,7 +159,62 @@ const InterviewPrep = () => {
   );
 };
 
-// ResumeBuilder is now imported from separate component file
+const ResumeBuilder = () => (
+  <div className="bg-gray-800/40 backdrop-blur-xl border border-gray-700/50 rounded-3xl p-8">
+    <h2 className="text-3xl font-bold mb-4">Resume & Portfolio Builder 📄</h2>
+    <p className="text-gray-400 mb-6">Create professional resumes and portfolios with AI assistance</p>
+    
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <div className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-300 mb-2">Full Name</label>
+          <input
+            type="text"
+            className="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-primary"
+            placeholder="John Doe"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-300 mb-2">Email</label>
+          <input
+            type="email"
+            className="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-primary"
+            placeholder="you@example.com"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-300 mb-2">Skills</label>
+          <textarea
+            className="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-primary"
+            placeholder="React, Node.js, Python..."
+            rows={3}
+          />
+        </div>
+        <button className="w-full py-3 bg-gradient-to-r from-primary to-secondary text-white font-semibold rounded-xl hover:shadow-lg transition-all">
+          Generate with AI ✨
+        </button>
+      </div>
+      <div className="bg-gray-900/50 rounded-2xl p-6">
+        <h3 className="text-xl font-bold mb-4">Preview</h3>
+        <div className="aspect-[8.5/11] bg-white rounded-lg flex items-center justify-center text-gray-800">
+          <p className="text-center">Your resume will appear here</p>
+        </div>
+      </div>
+    </div>
+
+    <div className="flex gap-4">
+      <button className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-xl hover:bg-blue-600 transition-all">
+        💾 Export PDF
+      </button>
+      <button className="px-6 py-3 bg-green-500 text-white font-semibold rounded-xl hover:bg-green-600 transition-all">
+        🔗 Generate Portfolio
+      </button>
+      <button className="px-6 py-3 bg-indigo-500 text-white font-semibold rounded-xl hover:bg-indigo-600 transition-all">
+        💼 LinkedIn Template
+      </button>
+    </div>
+  </div>
+);
 
 const ATSChecker = () => (
   <div className="bg-gray-800/40 backdrop-blur-xl border border-gray-700/50 rounded-3xl p-8">

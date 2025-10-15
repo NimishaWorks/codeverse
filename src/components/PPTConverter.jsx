@@ -453,6 +453,18 @@ const PPTConverter = () => {
                 <p className="text-slate-300 leading-relaxed">{generatedContent.summary}</p>
               </div>
 
+              {/* Extracted Features / Keywords */}
+              {generatedContent.features && generatedContent.features.length > 0 && (
+                <div className="mt-4 bg-white/5 rounded-2xl p-4 border border-white/10">
+                  <h4 className="text-sm font-semibold text-slate-200 mb-2">🔎 Key Concepts & Features</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {generatedContent.features.map((f, i) => (
+                      <span key={i} className="px-3 py-1 bg-white/6 rounded-full text-xs text-slate-300">{f}</span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Story Chapters */}
               <div className="space-y-4">
                 <h3 className="text-xl font-bold flex items-center gap-2">
@@ -504,6 +516,27 @@ const PPTConverter = () => {
                   ))}
                 </ul>
               </div>
+
+              {/* Flow Chart Visualization */}
+              {generatedContent.flowChart && generatedContent.flowChart.length > 0 && (
+                <div className="mt-8 bg-white/5 rounded-2xl p-6 border border-white/10">
+                  <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                    <span>🔗</span> Story Flow Chart
+                  </h3>
+                  <div className="flex flex-wrap gap-6 items-center justify-start">
+                    {generatedContent.flowChart.map((step, idx) => (
+                      <div key={idx} className="min-w-[180px] bg-gradient-to-br from-primary/10 to-secondary/10 rounded-xl p-4 border border-primary/20 shadow">
+                        <div className="font-bold text-primary mb-1">{step.step}</div>
+                        <div className="text-slate-300 text-sm mb-2">{step.description}</div>
+                        <div className="text-xs text-yellow-400 mb-1">{step.gamification}</div>
+                        {step.next && step.next.length > 0 && (
+                          <div className="text-xs text-slate-400">Next: {step.next.join(', ')}</div>
+                        )}
+                      </div>
+                      ))}
+                  </div>
+                </div>
+              )}
 
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 pt-4">

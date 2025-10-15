@@ -1,88 +1,38 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
-import { auth, googleProvider } from '../../firebase';
 
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    setLoading(true);
     
+    // TODO: Implement Firebase Auth login
     try {
-      // Firebase Email/Password Authentication
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-      
-      // Store user data in localStorage
-      localStorage.setItem('userName', user.displayName || email.split('@')[0]);
-      localStorage.setItem('userEmail', user.email);
-      localStorage.setItem('userId', user.uid);
-      
-      console.log('✅ User logged in:', user.email);
+      // Placeholder - replace with actual Firebase authentication
+      console.log('Login with:', email, password);
+      // Extract username from email (before @) or use email
+      const username = email.split('@')[0];
+      localStorage.setItem('userName', username);
+      localStorage.setItem('userEmail', email);
       navigate('/dashboard');
     } catch (err) {
-      console.error('❌ Login error:', err);
-      setError(getErrorMessage(err.code));
-    } finally {
-      setLoading(false);
+      setError(err.message);
     }
   };
 
   const handleGoogleLogin = async () => {
-    setError('');
-    setLoading(true);
-    
-    try {
-      // Firebase Google Sign-In with Popup
-      const result = await signInWithPopup(auth, googleProvider);
-      const user = result.user;
-      
-      // Store user data in localStorage
-      localStorage.setItem('userName', user.displayName || 'User');
-      localStorage.setItem('userEmail', user.email);
-      localStorage.setItem('userId', user.uid);
-      localStorage.setItem('userPhoto', user.photoURL || '');
-      
-      console.log('✅ Google Sign-In successful:', user.email);
-      navigate('/dashboard');
-    } catch (err) {
-      console.error('❌ Google Sign-In error:', err);
-      setError(getErrorMessage(err.code));
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Helper function to get user-friendly error messages
-  const getErrorMessage = (errorCode) => {
-    switch (errorCode) {
-      case 'auth/invalid-email':
-        return 'Invalid email address.';
-      case 'auth/user-disabled':
-        return 'This account has been disabled.';
-      case 'auth/user-not-found':
-        return 'No account found with this email.';
-      case 'auth/wrong-password':
-        return 'Incorrect password.';
-      case 'auth/popup-closed-by-user':
-        return 'Sign-in popup was closed. Please try again.';
-      case 'auth/cancelled-popup-request':
-        return 'Only one popup request is allowed at a time.';
-      case 'auth/popup-blocked':
-        return 'Popup was blocked by browser. Please allow popups.';
-      case 'auth/network-request-failed':
-        return 'Network error. Check your internet connection.';
-      default:
-        return 'An error occurred. Please try again.';
-    }
+    // TODO: Implement Google OAuth
+    console.log('Google login');
+    // Demo: Store demo user data
+    localStorage.setItem('userName', 'Demo User');
+    localStorage.setItem('userEmail', 'demo@codeverse.com');
+    navigate('/dashboard');
   };
 
   return (
@@ -130,10 +80,9 @@ const Login = () => {
 
             <button
               type="submit"
-              disabled={loading}
-              className="w-full py-3 bg-gradient-to-r from-primary to-secondary text-white font-semibold rounded-xl hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-3 bg-gradient-to-r from-primary to-secondary text-white font-semibold rounded-xl hover:shadow-lg transition-all"
             >
-              {loading ? 'Signing In...' : 'Sign In'}
+              Sign In
             </button>
           </form>
 
@@ -145,10 +94,10 @@ const Login = () => {
               <span className="px-2 bg-gray-800 text-gray-400">Or continue with</span>
             </div>
           </div>
+
           <button
             onClick={handleGoogleLogin}
-            disabled={loading}
-            className="w-full py-3 bg-white/10 border border-white/20 text-white font-semibold rounded-xl hover:bg-white/20 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full py-3 bg-white/10 border border-white/20 text-white font-semibold rounded-xl hover:bg-white/20 transition-all flex items-center justify-center gap-2"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -156,7 +105,7 @@ const Login = () => {
               <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
               <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
             </svg>
-            {loading ? 'Signing In...' : 'Google'}
+            Google
           </button>
 
           <p className="text-center text-gray-400 mt-6">
